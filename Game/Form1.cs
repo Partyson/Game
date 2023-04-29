@@ -15,36 +15,52 @@ namespace Game
     {
         public Form1()
         {
-            var label = new Label();
-            label.Location = new Point(0, 0);
-            label.Size = new Size(ClientSize.Width, 30);
-            label.Text = "Input number";
-            Controls.Add(label);
-            var input = new TextBox();
-            input.Location = new Point(0, label.Bottom);
-            input.Size = label.Size;
-            Controls.Add(input);
-
-            var button = new Button();
-            button.Location = new Point(0, input.Bottom);
-            button.Size = label.Size;
-            button.Text = "Increment";
-            button.Click += (sender, args) =>
-            {
-                var number = int.Parse(input.Text);
-                number++;
-                input.Text = number.ToString();
-            };
-            Controls.Add(button);
             InitializeComponent();
+            var pictureBox = new PictureBox();
+            pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox.Location = new Point(500, 500);
+            var ispressedKey = false;
+            pictureBox.Image = Image.FromFile("D:/university B/Game/Game/Game/Images/person.png");
+            Controls.Add(pictureBox);
+            var timer = new Timer();
+            timer.Interval = 500;
+            var random = new Random();
+            timer.Tick += (sender, args) =>
+            {
+                var mobPosition = new Point(random.Next(0, ClientSize.Width), random.Next(0, ClientSize.Height));
+                var mobPicture = new PictureBox();
+                mobPicture.SizeMode = PictureBoxSizeMode.AutoSize;
+                mobPicture.Image = Image.FromFile("D:/university B/Game/Game/Game/Images/mob.png");
+                mobPicture.Location = mobPosition;
+                Controls.Add(mobPicture);
+            };
+            timer.Start();
+            
+            this.KeyDown += (sender, args) =>
+            {
+                switch (args.KeyCode.ToString())
+                {
+                    case "A":
+                        pictureBox.Location = new Point(pictureBox.Location.X - 5, pictureBox.Location.Y);
+                        break;
+                    case "D":
+                        pictureBox.Location = new Point(pictureBox.Location.X + 5, pictureBox.Location.Y);
+                        break;
+                    case "W":
+                        pictureBox.Location = new Point(pictureBox.Location.X, pictureBox.Location.Y - 5);
+                        break;
+                    case "S":
+                        pictureBox.Location = new Point(pictureBox.Location.X, pictureBox.Location.Y + 5);
+                        break;
+                }
+
+                ispressedKey = true;
+            };
         }
         
-        protected override void OnFormClosing(FormClosingEventArgs eventArgs)
+        public static class Mob
         {
-            var result = MessageBox.Show("Действительно закрыть?", "",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result != DialogResult.Yes) 
-                eventArgs.Cancel = true;
+            
         }
     }
 }
