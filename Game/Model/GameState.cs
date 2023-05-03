@@ -1,4 +1,4 @@
-﻿namespace Game
+﻿namespace Game.Model
 {
     public enum GameState
     {

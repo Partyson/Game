@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using Game.Model;
 using Game.View.Screen;
 
 namespace Game.View
@@ -10,7 +11,7 @@ namespace Game.View
 
         public GameWindow(GameModel gameModel)
         {
-            ClientSize = new Size(512, 256);
+            ClientSize = new Size(1024, 512);
 
             _gameModel = gameModel;
             _gameModel.GameStateChanged += SetGameState;
