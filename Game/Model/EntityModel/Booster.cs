@@ -1,4 +1,4 @@
-﻿namespace Game.Model.Entity
+﻿namespace Game.Model.EntityModel
 {
     public class Booster : Entity
     {
@@ -7,6 +7,5 @@
         {
             BoosterData = boosterData;
         }
-        
     }
 }

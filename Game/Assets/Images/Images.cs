@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
+using Game.Model;
 
 namespace Game.Assets.Images
 {

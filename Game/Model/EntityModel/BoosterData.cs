@@ -1,15 +1,15 @@
 ﻿using System.Drawing;
 
-namespace Game.Model.Entity
+namespace Game.Model.EntityModel
 {
     public class BoosterData
     {
         public BoosterType Type { get; }
-        public int Value { get; }
+        public double Value { get; }
 
         public Image Image { get; }
 
-        public BoosterData(BoosterType type, int value, Image image)
+        public BoosterData(BoosterType type, double value, Image image)
         {
             Type = type;
             Value = value;

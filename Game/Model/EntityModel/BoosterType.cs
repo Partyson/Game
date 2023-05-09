@@ -1,4 +1,4 @@
-﻿namespace Game.Model.Entity
+﻿namespace Game.Model.EntityModel
 {
     public enum BoosterType
     {

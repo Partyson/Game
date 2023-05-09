@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using Game.Model;
-using Game.Model.Entity;
+using Game.Model.EntityModel;
 
-namespace Game
+namespace Game.Model
 {
     public class GameModel
     {
@@ -20,7 +18,6 @@ namespace Game
         } 
         
         public Player Player;
-        public Map Map;
         public List<Enemy> Enemies;
         public List<Booster> Boosters;
 
@@ -28,12 +25,7 @@ namespace Game
         
         public void StartGame()
         {
-            Player = new Player(256 / 64, 128 / 64);
-            Player.PlayerDied += GameOver;
-
-            Map = new Map();
-            Map.GenerateMap();
-            
+            Player = new Player(0, 0, GameOver);
         }
 
         public void SpawnEnemy()

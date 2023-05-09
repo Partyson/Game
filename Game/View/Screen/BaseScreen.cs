@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using Game.Model;
 
 namespace Game.View.Screen
 {
