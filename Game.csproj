@@ -63,10 +63,10 @@
         <Compile Include="Model\EntityModel\BoosterType.cs" />
         <Compile Include="Model\EntityModel\Enemy.cs" />
         <Compile Include="Model\EntityModel\Entity.cs" />
-        <Compile Include="Model\EntityModel\HitBox.cs" />
         <Compile Include="Model\EntityModel\Player.cs" />
         <Compile Include="Model\GameModel.cs" />
         <Compile Include="Model\GameState.cs" />
+        <Compile Include="Model\HitBox.cs" />
         <Compile Include="Model\LandType.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

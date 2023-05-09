@@ -27,7 +27,7 @@ namespace Game.Model
         
         public void StartGame()
         {
-            Player = new Player(0, 0, GameOver);
+            Player = new Player(0, 0, _ => GameOver());
             Score = 0;
             Enemies = new List<Enemy>();
             Boosters = new List<Booster>();
@@ -50,6 +50,11 @@ namespace Game.Model
             GameState = GameState.GameOver;
         }
 
-        private void EnemyDied() => Score++;
+        private void EnemyDied(Entity enemy)
+        {
+            lock(lockObject)
+                Enemies.Remove(enemy as Enemy);
+            Score++;
+        } 
     }
 }

@@ -21,6 +21,7 @@ namespace Game.View.Screen
         private CollisionController _collisionController;
         private EnemySpawner _enemySpawner;
         private EnemyAi _enemyAi;
+        
 
         public GameScreen(GameModel gameModel) : base(gameModel)
         {
@@ -67,7 +68,31 @@ namespace Game.View.Screen
         }
 
         private void OnEnemyCollied(Enemy enemy) => _gameModel.Player.GetDamage(enemy.Damage);
-        
+
+        protected override void OnMouseClick(MouseEventArgs e)
+        {
+            lock(_lockObject)
+            {
+                foreach (var enemy in _gameModel.Enemies)
+                {
+                    var mouseWorldSystemPosition = ConvertToWorldSystem(e.Location);
+                    
+                    var mouseHitBox = new HitBox(
+                        new Point(mouseWorldSystemPosition.X - GameSettings.AttackArea,
+                            mouseWorldSystemPosition.Y - GameSettings.AttackArea),
+                        new Size(GameSettings.AttackArea * 2, GameSettings.AttackArea * 2));
+                    
+                    if (enemy.HitBox.IsIntersect(mouseHitBox))
+                    {
+                        enemy.GetDamage(_gameModel.Player.Damage);
+                        break;
+                    }
+                }
+
+                base.OnMouseClick(e);
+            }
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             lock(_lockObject)
@@ -85,22 +110,31 @@ namespace Game.View.Screen
         {
             foreach (var enemy in _gameModel.Enemies)
             {
-                var enemyViewportPosition = ConvertToViewportPosition(enemy.Position);
-                graphics.FillEllipse(new SolidBrush(Color.Black), enemyViewportPosition.X - 8, enemyViewportPosition.Y - 8, 16,
-                    16);
+                var enemyViewportPosition = ConvertToViewportSystem(enemy.Position);
+                graphics.FillEllipse(new SolidBrush(Color.Black), enemyViewportPosition.X - 8,
+                    enemyViewportPosition.Y - 8, enemy.HitBox.Size.Width, enemy.HitBox.Size.Height);
+                
             }
         }
 
         private void DrawPlayer(Graphics graphics)
         {
-            graphics.FillEllipse(new SolidBrush(Color.White), ClientSize.Width / 2 - 8, ClientSize.Height / 2 - 8, 16, 16);
+            graphics.FillEllipse(new SolidBrush(Color.White), ClientSize.Width / 2 - 8, ClientSize.Height / 2 - 8,
+                _gameModel.Player.HitBox.Size.Width, _gameModel.Player.HitBox.Size.Height);
         }
 
-        private Point ConvertToViewportPosition(Point position)
+        private Point ConvertToViewportSystem(Point position)
         {
             var playerPosition = _gameModel.Player.Position;
             return new Point(position.X - playerPosition.X + ClientSize.Width / 2,
                 position.Y - playerPosition.Y + ClientSize.Height / 2);
+        }
+
+        private Point ConvertToWorldSystem(Point position)
+        {
+            var playerPosition = _gameModel.Player.Position;
+            return new Point(position.X + playerPosition.X - ClientSize.Width / 2,
+                position.Y + playerPosition.Y - ClientSize.Height / 2);
         }
 
         private void DrawMap(Graphics graphics)
