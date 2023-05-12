@@ -17,7 +17,7 @@ namespace Game.Model.EntityModel
         public Entity(int x, int y)
         {
             Position = new Point(x, y);
-
+            HitBox = new HitBox(Position, new Size(50, 50));
         }
         public Entity(int x, int y, Action<Entity> onEntityDied, double health, double damage)
         {

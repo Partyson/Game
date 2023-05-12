@@ -1,64 +1,82 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.Timers;
 using System.Windows.Forms;
 using DotnetNoise;
 using Game.Assets.Images;
 using Game.Controller;
 using Game.Model;
 using Game.Model.EntityModel;
-using Timer = System.Timers.Timer;
 
 namespace Game.View.Screen
 {
     public class GameScreen : BaseScreen
     {
         private readonly Images _images = new Images();
-        private int _counter;
+
+        private readonly Dictionary<BoosterType, Color> _colors = new Dictionary<BoosterType, Color>
+        {
+            { BoosterType.Damage, Color.Aqua },
+            { BoosterType.BulletLimit, Color.Orange },
+            { BoosterType.HeathRegeneration, Color.Green },
+            { BoosterType.MaxHealth, Color.Red },
+            { BoosterType.ReloadSpeed, Color.Blue }
+        };
         private object _lockObject = new object();
         private readonly FastNoise _fastNoise = new FastNoise();
-        private Timer _timer = new Timer();
         private CollisionController _collisionController;
+        private BoosterSpawner _boosterSpawner;
         private EnemySpawner _enemySpawner;
         private EnemyAi _enemyAi;
-        
+        private GameTickController _gameTickController;
 
         public GameScreen(GameModel gameModel) : base(gameModel)
         {
+            _gameTickController = new GameTickController(100);
             _collisionController = new CollisionController(gameModel);
             _enemySpawner = new EnemySpawner(gameModel);
+            _boosterSpawner = new BoosterSpawner(gameModel);
             _enemyAi = new EnemyAi(gameModel);
             _fastNoise.Frequency = 0.1f;
             
-            _timer.Interval = 100;
-            _timer.Elapsed += UpdateGameState;
-            _timer.Start();
+            _gameTickController.RegisterAction(SpawnEnemy, 1);
+            _gameTickController.RegisterAction(SpawnBooster, 5);
+            _gameTickController.RegisterAction(UpdateEnemyAi, 1);
+            _gameTickController.RegisterAction(CheckCollision, 1);
+            _gameTickController.StartTimer();
             
             gameModel.StartGame();
         }
 
-        private void UpdateGameState(object sender, ElapsedEventArgs e)
+        private void SpawnEnemy()
+        {
+            lock(_lockObject)
+                _enemySpawner.Spawn();
+        }
+
+        private void UpdateEnemyAi()
+        {
+            lock(_lockObject)
+                _enemyAi.Update();
+        }
+
+        private void SpawnBooster()
+        {
+            lock(_lockObject)
+                _boosterSpawner.Spawn();
+        }
+        
+        private void CheckCollision()
         {
             lock(_lockObject)
             {
-                SpawnEnemy();
-                _enemyAi.Update();
-
                 if (!_collisionController.TryGetPlayerCollision(out var entity))
                     return;
                 if (entity is Booster)
                     OnBoosterCollied(entity as Booster);
                 else
                     OnEnemyCollied(entity as Enemy);
-
-                _counter++;
             }
-        }
-
-        private void SpawnEnemy()
-        {
-            if(_counter % 2 == 0)
-                _enemySpawner.Spawn();
         }
 
         private void OnBoosterCollied(Booster booster)
@@ -100,19 +118,34 @@ namespace Game.View.Screen
                 DrawMap(e.Graphics);
                 DrawPlayer(e.Graphics);
                 DrawEnemies(e.Graphics);
+                DrawBoosters(e.Graphics);
                 Invalidate();
 
                 base.OnPaint(e);
             }
         }
 
+        private void DrawBoosters(Graphics graphics)
+        {
+            foreach (var booster in _gameModel.Boosters)
+            {
+                var boosterViewportPosition = ConvertToViewportSystem(booster.Position);
+                var hitbox = (booster.HitBox.Size.Width, booster.HitBox.Size.Height);
+                graphics.FillRectangle(new SolidBrush(_colors[booster.BoosterData.Type]),boosterViewportPosition.X - hitbox.Width / 2,
+                    boosterViewportPosition.Y - hitbox.Height / 2, hitbox.Width, hitbox.Height);
+            }
+        }
         private void DrawEnemies(Graphics graphics)
         {
             foreach (var enemy in _gameModel.Enemies)
             {
+                var hitbox = (enemy.HitBox.Size.Width, enemy.HitBox.Size.Height);
                 var enemyViewportPosition = ConvertToViewportSystem(enemy.Position);
-                graphics.FillEllipse(new SolidBrush(Color.Black), enemyViewportPosition.X - 8,
-                    enemyViewportPosition.Y - 8, enemy.HitBox.Size.Width, enemy.HitBox.Size.Height);
+                var hitboxViewportPosition = ConvertToViewportSystem(enemy.HitBox.Position);
+                graphics.FillEllipse(new SolidBrush(Color.Black), enemyViewportPosition.X - hitbox.Width / 2,
+                    enemyViewportPosition.Y - hitbox.Height / 2, hitbox.Width, hitbox.Height);
+                graphics.DrawRectangle(new Pen(Color.Chartreuse), hitboxViewportPosition.X - hitbox.Width / 2,
+                    hitboxViewportPosition.Y - hitbox.Height / 2, hitbox.Width, hitbox.Height);
                 
             }
         }

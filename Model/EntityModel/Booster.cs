@@ -1,9 +1,11 @@
-﻿namespace Game.Model.EntityModel
+﻿using System;
+
+namespace Game.Model.EntityModel
 {
     public class Booster : Entity
     {
         public BoosterData BoosterData { get;}
-        public Booster(int x, int y, BoosterData boosterData) : base(x, y)
+        public Booster(int x, int y, Action<Entity> onBoosterDied, BoosterData boosterData) : base(x, y, onBoosterDied, 1, 0)
         {
             BoosterData = boosterData;
         }

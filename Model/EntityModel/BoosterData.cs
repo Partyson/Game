@@ -6,14 +6,11 @@ namespace Game.Model.EntityModel
     {
         public BoosterType Type { get; }
         public double Value { get; }
-
-        public Image Image { get; }
-
-        public BoosterData(BoosterType type, double value, Image image)
+        
+        public BoosterData(BoosterType type, double value)
         {
             Type = type;
             Value = value;
-            Image = image;
         }
     }
 }

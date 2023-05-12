@@ -8,31 +8,31 @@ namespace Game.Controller
     public class EnemySpawner
     {
         private readonly GameModel _gameModel;
-        private Random _random = new Random();
+        private readonly Random _random = new Random();
 
         private Dictionary<Side, (int minX, int maxX, int minY, int maxY)> _spawnConfines =
             new Dictionary<Side, (int, int, int, int)>
             {
                 {
                     Side.Top,
-                    (GameSettings.MaxRectangleSpawn.Left, GameSettings.MaxRectangleSpawn.Right,
-                        GameSettings.MaxRectangleSpawn.Top, GameSettings.MinRectangleSpawn.Top)
+                    (GameSettings.MaxSpawnRange.Left, GameSettings.MaxSpawnRange.Right,
+                        GameSettings.MaxSpawnRange.Top, GameSettings.MinSpawnRange.Top)
                 },
                 {
                     Side.Bottom,
-                    (GameSettings.MaxRectangleSpawn.Left, GameSettings.MaxRectangleSpawn.Right,
-                        GameSettings.MinRectangleSpawn.Bottom, GameSettings.MaxRectangleSpawn.Bottom)
+                    (GameSettings.MaxSpawnRange.Left, GameSettings.MaxSpawnRange.Right,
+                        GameSettings.MinSpawnRange.Bottom, GameSettings.MaxSpawnRange.Bottom)
                 },
                 {
                     Side.Left,
-                    (GameSettings.MaxRectangleSpawn.Left, GameSettings.MinRectangleSpawn.Left,
-                        GameSettings.MaxRectangleSpawn.Top, GameSettings.MaxRectangleSpawn.Bottom)
+                    (GameSettings.MaxSpawnRange.Left, GameSettings.MinSpawnRange.Left,
+                        GameSettings.MaxSpawnRange.Top, GameSettings.MaxSpawnRange.Bottom)
                 },
                 {
                     Side.Right,
-                    (GameSettings.MinRectangleSpawn.Right, GameSettings.MaxRectangleSpawn.Right,
-                        GameSettings.MaxRectangleSpawn.Top, GameSettings.MaxRectangleSpawn.Bottom)
-                },
+                    (GameSettings.MinSpawnRange.Right, GameSettings.MaxSpawnRange.Right,
+                        GameSettings.MaxSpawnRange.Top, GameSettings.MaxSpawnRange.Bottom)
+                }
             };
 
         public EnemySpawner(GameModel gameModel)

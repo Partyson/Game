@@ -40,9 +40,9 @@ namespace Game.Model
             Enemies.Add(new Enemy(x, y, EnemyDied, startHealth, startDamage));
         }
 
-        public void SpawnBooster()
+        public void SpawnBooster(int x, int y, BoosterData boosterData)
         {
-            //TODO: спавн нового бустера
+            Boosters.Add(new Booster(x, y, BoosterPicked, boosterData));
         }
         
         public void GameOver()
@@ -55,6 +55,12 @@ namespace Game.Model
             lock(lockObject)
                 Enemies.Remove(enemy as Enemy);
             Score++;
-        } 
+        }
+
+        private void BoosterPicked(Entity booster)
+        {
+            lock (lockObject)
+                Boosters.Remove(booster as Booster);
+        }
     }
 }
