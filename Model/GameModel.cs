@@ -7,7 +7,8 @@ namespace Game.Model
     public class GameModel
     {
         private GameState _gameState;
-        private object lockObject = new object();
+        private readonly object _lockObject = new object();
+
         public GameState GameState
         {
             get => _gameState;
@@ -16,15 +17,15 @@ namespace Game.Model
                 _gameState = value;
                 GameStateChanged(value);
             }
-        } 
-        
+        }
+
         public Player Player { get; private set; }
         public List<Enemy> Enemies { get; private set; }
         public List<Booster> Boosters { get; private set; }
-        public int Score { get; private set; }
+        private int Score { get; set; }
 
         public event Action<GameState> GameStateChanged;
-        
+
         public void StartGame()
         {
             Player = new Player(0, 0, _ => GameOver());
@@ -44,7 +45,7 @@ namespace Game.Model
         {
             Boosters.Add(new Booster(x, y, BoosterPicked, boosterData));
         }
-        
+
         public void GameOver()
         {
             GameState = GameState.Menu;
@@ -52,15 +53,15 @@ namespace Game.Model
 
         private void EnemyDied(Entity enemy)
         {
-            lock(lockObject)
+            lock (_lockObject)
                 Enemies.Remove(enemy as Enemy);
-            
+
             Score++;
         }
 
         private void BoosterPicked(Entity booster)
         {
-            lock (lockObject)
+            lock (_lockObject)
                 Boosters.Remove(booster as Booster);
         }
     }

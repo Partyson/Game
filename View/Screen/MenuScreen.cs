@@ -5,7 +5,7 @@ using Game.Model;
 
 namespace Game.View.Screen
 {
-    public class MenuScreen : BaseScreen
+    public sealed class MenuScreen : BaseScreen
     {
         public MenuScreen(GameModel gameModel) : base(gameModel)
         {
@@ -43,11 +43,5 @@ namespace Game.View.Screen
                 gameNameLabel.Left = (ClientSize.Width - gameNameLabel.Width) / 2;
             };
         }
-
-        private void ExitButtonOnClick(object sender, EventArgs e) => Application.Exit();
-
-        private void TutorialButtonOnClick(object sender, EventArgs e) => _gameModel.GameState = GameState.Tutorial;
-
-        private void StartButtonOnClick(object sender, EventArgs e) => _gameModel.GameState = GameState.Game;
     }
 }

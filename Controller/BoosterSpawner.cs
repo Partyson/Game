@@ -10,7 +10,7 @@ namespace Game.Controller
         private readonly GameModel _gameModel;
         private readonly Random _random = new Random();
 
-        private List<BoosterData> _boosterDatas = new List<BoosterData>()
+        private readonly List<BoosterData> _boosterDatas = new List<BoosterData>()
         {
             new BoosterData(BoosterType.Damage, 0.1),
             new BoosterData(BoosterType.HeathRegeneration, 0.2),

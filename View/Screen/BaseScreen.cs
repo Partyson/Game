@@ -5,11 +5,11 @@ namespace Game.View.Screen
 {
     public class BaseScreen : UserControl
     {
-        protected GameModel _gameModel;
+        protected readonly GameModel GameModel;
 
-        public BaseScreen(GameModel gameModel)
+        protected BaseScreen(GameModel gameModel)
         {
-            _gameModel = gameModel;
+            GameModel = gameModel;
             Dock = DockStyle.Fill;
             DoubleBuffered = true;
         }

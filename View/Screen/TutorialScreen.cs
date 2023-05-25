@@ -5,7 +5,7 @@ using Game.Model;
 
 namespace Game.View.Screen
 {
-    public class TutorialScreen : BaseScreen
+    public sealed class TutorialScreen : BaseScreen
     {
         public TutorialScreen(GameModel gameModel) : base(gameModel)
         {

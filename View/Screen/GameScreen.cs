@@ -46,7 +46,7 @@ namespace Game.View.Screen
             _gameTickController.RegisterAction(UpdateEnemyAi, 1);
             _gameTickController.RegisterAction(CheckCollision, 1);
             _gameTickController.StartTimer();
-            _gameModel.GameStateChanged += GameModelOnGameStateChanged;
+            GameModel.GameStateChanged += GameModelOnGameStateChanged;
 
             gameModel.StartGame();
         }
@@ -91,21 +91,21 @@ namespace Game.View.Screen
         private void OnBoosterCollied(Booster booster)
         {
             booster.GetDamage(booster.Health);
-            _gameModel.Player.TakeBooster(booster);
+            GameModel.Player.TakeBooster(booster);
         }
 
-        private void OnEnemyCollied(Enemy enemy) => _gameModel.Player.GetDamage(enemy.Damage);
+        private void OnEnemyCollied(Enemy enemy) => GameModel.Player.GetDamage(enemy.Damage);
 
         protected override void OnMouseClick(MouseEventArgs eventArgs)
         {
             lock (_lockObject)
             {
-                foreach (var enemy in from enemy in _gameModel.Enemies
+                foreach (var enemy in from enemy in GameModel.Enemies
                          let mouseWorldSystemPosition = ConvertToWorldSystem(eventArgs.Location)
                          where enemy.HitBox.Contains(mouseWorldSystemPosition)
                          select enemy)
                 {
-                    enemy.GetDamage(_gameModel.Player.Damage);
+                    enemy.GetDamage(GameModel.Player.Damage);
                     break;
                 }
 
@@ -129,7 +129,7 @@ namespace Game.View.Screen
 
         private void DrawBoosters(Graphics graphics)
         {
-            foreach (var booster in _gameModel.Boosters)
+            foreach (var booster in GameModel.Boosters)
             {
                 var boosterViewportPosition = ConvertToViewportSystem(booster.Position);
                 var hitbox = (booster.HitBox.Size.Width, booster.HitBox.Size.Height);
@@ -141,7 +141,7 @@ namespace Game.View.Screen
 
         private void DrawEnemies(Graphics graphics)
         {
-            foreach (var enemy in _gameModel.Enemies)
+            foreach (var enemy in GameModel.Enemies)
             {
                 var hitbox = (enemy.HitBox.Size.Width, enemy.HitBox.Size.Height);
                 var enemyViewportPosition = ConvertToViewportSystem(enemy.Position);
@@ -155,19 +155,19 @@ namespace Game.View.Screen
         private void DrawPlayer(Graphics graphics)
         {
             graphics.FillEllipse(new SolidBrush(Color.White), ClientSize.Width / 2 - 8, ClientSize.Height / 2 - 8,
-                _gameModel.Player.HitBox.Size.Width, _gameModel.Player.HitBox.Size.Height);
+                GameModel.Player.HitBox.Size.Width, GameModel.Player.HitBox.Size.Height);
         }
 
         private Point ConvertToViewportSystem(Point position)
         {
-            var playerPosition = _gameModel.Player.Position;
+            var playerPosition = GameModel.Player.Position;
             return new Point(position.X - playerPosition.X + ClientSize.Width / 2,
                 position.Y - playerPosition.Y + ClientSize.Height / 2);
         }
 
         private Point ConvertToWorldSystem(Point position)
         {
-            var playerPosition = _gameModel.Player.Position;
+            var playerPosition = GameModel.Player.Position;
             return new Point(position.X + playerPosition.X - ClientSize.Width / 2,
                 position.Y + playerPosition.Y - ClientSize.Height / 2);
         }
@@ -176,12 +176,12 @@ namespace Game.View.Screen
         {
             var clientHalfWidth = ClientSize.Width / 2;
             var clientHalfHeight = ClientSize.Height / 2;
-            var startX = -_gameModel.Player.Position.X % GameSettings.TileSize;
-            var startY = -_gameModel.Player.Position.Y % GameSettings.TileSize;
+            var startX = -GameModel.Player.Position.X % GameSettings.TileSize;
+            var startY = -GameModel.Player.Position.Y % GameSettings.TileSize;
 
-            var startColumn = ConvertToTilesSystem(_gameModel.Player.Position.X) -
+            var startColumn = ConvertToTilesSystem(GameModel.Player.Position.X) -
                               ConvertToTilesSystem(clientHalfWidth);
-            var startRow = ConvertToTilesSystem(_gameModel.Player.Position.Y) - ConvertToTilesSystem(clientHalfHeight);
+            var startRow = ConvertToTilesSystem(GameModel.Player.Position.Y) - ConvertToTilesSystem(clientHalfHeight);
 
             for (var column = startColumn - 1;
                  column <= startColumn + ConvertToTilesSystem(ClientSize.Width) + 1;
@@ -213,25 +213,25 @@ namespace Game.View.Screen
             base.OnKeyDown(e);
         }
 
-        public void KeyDown(Keys key)
+        private void KeyDown(Keys key)
         {
             switch (key)
             {
                 case Keys.A:
                 case Keys.Left:
-                    _gameModel.Player.Move(new Size(-10, 0));
+                    GameModel.Player.Move(new Size(-10, 0));
                     break;
                 case Keys.D:
                 case Keys.Right:
-                    _gameModel.Player.Move(new Size(10, 0));
+                    GameModel.Player.Move(new Size(10, 0));
                     break;
                 case Keys.W:
                 case Keys.Up:
-                    _gameModel.Player.Move(new Size(0, -10));
+                    GameModel.Player.Move(new Size(0, -10));
                     break;
                 case Keys.S:
                 case Keys.Down:
-                    _gameModel.Player.Move(new Size(0, 10));
+                    GameModel.Player.Move(new Size(0, 10));
                     break;
             }
 

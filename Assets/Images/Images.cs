@@ -29,25 +29,5 @@ namespace Game.Assets.Images
             Player = LoadImageFromAssets("player.png");
             Tutorial = LoadImageFromAssets("tutorial.png");
         }
-
-        public Image GetImageFromType(LandType landType)
-        {
-            switch (landType)
-            {
-                case LandType.Blue:
-                    return Blue;
-                case LandType.Green:
-                    return Green;
-                case LandType.Red:
-                    return Red;
-
-                case LandType.Yellow:
-                    return Yellow; 
-                
-            //   case LandType.White:
-                default:
-                    return White;
-            }
-        }
     }
 }

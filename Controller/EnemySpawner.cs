@@ -10,7 +10,7 @@ namespace Game.Controller
         private readonly GameModel _gameModel;
         private readonly Random _random = new Random();
 
-        private Dictionary<Side, (int minX, int maxX, int minY, int maxY)> _spawnConfines =
+        private readonly Dictionary<Side, (int minX, int maxX, int minY, int maxY)> _spawnConfines =
             new Dictionary<Side, (int, int, int, int)>
             {
                 {

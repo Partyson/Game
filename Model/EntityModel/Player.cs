@@ -4,12 +4,12 @@ namespace Game.Model.EntityModel
 {
     public class Player : Entity
     {
-        public int BulletLimit { get; protected set; }
-        public double MaxHealth { get; protected set; }
-        public double  HeathRegeneration { get; protected set; }
-        public double ReloadSpeed {get; protected set; }
+        private int BulletLimit { get; set; }
+        private double MaxHealth { get; set; }
+        private double HeathRegeneration { get; set; }
+        private double ReloadSpeed { get; set; }
 
-        public Player(int x, int y, Action<Entity> onPlayerOnEntityDied, int health = 100, int damage = 20) 
+        public Player(int x, int y, Action<Entity> onPlayerOnEntityDied, int health = 100, int damage = 20)
             : base(x, y, onPlayerOnEntityDied, health, damage)
         {
         }

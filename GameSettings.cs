@@ -4,10 +4,7 @@ namespace Game
 {
     public static class GameSettings
     {
-        public const int MapHeight = 1000;
-        public const int MapWidth = 1000;
         public const int TileSize = 32;
-        public const int AttackArea = 4;
         public static readonly Size ViewportSize = new Size(2000, 1000);
 
         public static readonly Rectangle MinSpawnRange =
