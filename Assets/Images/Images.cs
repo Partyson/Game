@@ -28,7 +28,6 @@ namespace Game.Assets.Images
             White = LoadImageFromAssets("white.png");
             Player = LoadImageFromAssets("player.png");
             Tutorial = LoadImageFromAssets("tutorial.png");
-            //тест кнопки Commit and Push
         }
     }
 }
