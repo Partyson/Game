@@ -14,8 +14,7 @@ namespace Game.Model
             set
             {
                 _gameState = value;
-                Console.Write("");
-                GameStateChanged?.Invoke(value);
+                GameStateChanged(value);
             }
         } 
         
@@ -55,6 +54,7 @@ namespace Game.Model
         {
             lock(lockObject)
                 Enemies.Remove(enemy as Enemy);
+            
             Score++;
         }
 

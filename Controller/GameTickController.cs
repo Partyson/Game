@@ -10,7 +10,7 @@ namespace Game.Controller
         private readonly Timer _timer;
         private int _counter;
 
-        private Dictionary<int, List<Action>> _actions = new Dictionary<int, List<Action>>();
+        private readonly Dictionary<int, List<Action>> _actions = new Dictionary<int, List<Action>>();
 
         public GameTickController(int interval)
         {

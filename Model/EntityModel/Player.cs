@@ -9,7 +9,8 @@ namespace Game.Model.EntityModel
         public double  HeathRegeneration { get; protected set; }
         public double ReloadSpeed {get; protected set; }
 
-        public Player(int x, int y, Action<Entity> onPlayerOnEntityDied, int health = 100, int damage = 20) : base(x, y, onPlayerOnEntityDied, health, damage)
+        public Player(int x, int y, Action<Entity> onPlayerOnEntityDied, int health = 100, int damage = 20) 
+            : base(x, y, onPlayerOnEntityDied, health, damage)
         {
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using DotnetNoise;
 using Game.Assets.Images;
@@ -22,6 +23,7 @@ namespace Game.View.Screen
             { BoosterType.MaxHealth, Color.Red },
             { BoosterType.ReloadSpeed, Color.Blue }
         };
+
         private readonly object _lockObject = new object();
         private readonly FastNoise _fastNoise = new FastNoise();
         private readonly CollisionController _collisionController;
@@ -32,51 +34,50 @@ namespace Game.View.Screen
 
         public GameScreen(GameModel gameModel) : base(gameModel)
         {
-
             _gameTickController = new GameTickController(100);
             _collisionController = new CollisionController(gameModel);
             _enemySpawner = new EnemySpawner(gameModel);
             _boosterSpawner = new BoosterSpawner(gameModel);
             _enemyAi = new EnemyAi(gameModel);
             _fastNoise.Frequency = 0.1f;
-            
+
             _gameTickController.RegisterAction(SpawnEnemy, 5);
             _gameTickController.RegisterAction(SpawnBooster, 10);
             _gameTickController.RegisterAction(UpdateEnemyAi, 1);
             _gameTickController.RegisterAction(CheckCollision, 1);
             _gameTickController.StartTimer();
             _gameModel.GameStateChanged += GameModelOnGameStateChanged;
+
             gameModel.StartGame();
         }
 
         private void GameModelOnGameStateChanged(GameState gameState)
         {
-            Console.Write("afasfasfasf");
-            if(gameState == GameState.Game)
+            if (gameState != GameState.Game)
                 _gameTickController.StopTimer();
         }
 
         private void SpawnEnemy()
         {
-            lock(_lockObject)
+            lock (_lockObject)
                 _enemySpawner.Spawn();
         }
 
         private void UpdateEnemyAi()
         {
-            lock(_lockObject)
+            lock (_lockObject)
                 _enemyAi.Update();
         }
 
         private void SpawnBooster()
         {
-            lock(_lockObject)
+            lock (_lockObject)
                 _boosterSpawner.Spawn();
         }
-        
+
         private void CheckCollision()
         {
-            lock(_lockObject)
+            lock (_lockObject)
             {
                 if (!_collisionController.TryGetPlayerCollision(out var entity))
                     return;
@@ -95,33 +96,26 @@ namespace Game.View.Screen
 
         private void OnEnemyCollied(Enemy enemy) => _gameModel.Player.GetDamage(enemy.Damage);
 
-        protected override void OnMouseClick(MouseEventArgs e)
+        protected override void OnMouseClick(MouseEventArgs eventArgs)
         {
-            lock(_lockObject)
+            lock (_lockObject)
             {
-                foreach (var enemy in _gameModel.Enemies)
+                foreach (var enemy in from enemy in _gameModel.Enemies
+                         let mouseWorldSystemPosition = ConvertToWorldSystem(eventArgs.Location)
+                         where enemy.HitBox.Contains(mouseWorldSystemPosition)
+                         select enemy)
                 {
-                    var mouseWorldSystemPosition = ConvertToWorldSystem(e.Location);
-                    
-                    var mouseHitBox = new HitBox(
-                        new Point(mouseWorldSystemPosition.X - GameSettings.AttackArea,
-                            mouseWorldSystemPosition.Y - GameSettings.AttackArea),
-                        new Size(GameSettings.AttackArea * 2, GameSettings.AttackArea * 2));
-                    
-                    if (enemy.HitBox.IsIntersect(mouseHitBox))
-                    {
-                        enemy.GetDamage(_gameModel.Player.Damage);
-                        break;
-                    }
+                    enemy.GetDamage(_gameModel.Player.Damage);
+                    break;
                 }
 
-                base.OnMouseClick(e);
+                base.OnMouseClick(eventArgs);
             }
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            lock(_lockObject)
+            lock (_lockObject)
             {
                 DrawMap(e.Graphics);
                 DrawPlayer(e.Graphics);
@@ -139,22 +133,22 @@ namespace Game.View.Screen
             {
                 var boosterViewportPosition = ConvertToViewportSystem(booster.Position);
                 var hitbox = (booster.HitBox.Size.Width, booster.HitBox.Size.Height);
-                graphics.FillRectangle(new SolidBrush(_colors[booster.BoosterData.Type]),boosterViewportPosition.X - hitbox.Width / 2,
+                graphics.FillRectangle(new SolidBrush(_colors[booster.BoosterData.Type]),
+                    boosterViewportPosition.X - hitbox.Width / 2,
                     boosterViewportPosition.Y - hitbox.Height / 2, hitbox.Width, hitbox.Height);
             }
         }
+
         private void DrawEnemies(Graphics graphics)
         {
             foreach (var enemy in _gameModel.Enemies)
             {
                 var hitbox = (enemy.HitBox.Size.Width, enemy.HitBox.Size.Height);
                 var enemyViewportPosition = ConvertToViewportSystem(enemy.Position);
-                var hitboxViewportPosition = ConvertToViewportSystem(enemy.HitBox.Position);
-                graphics.FillEllipse(new SolidBrush(Color.Black), enemyViewportPosition.X - hitbox.Width / 2,
-                    enemyViewportPosition.Y - hitbox.Height / 2, hitbox.Width, hitbox.Height);
-                graphics.DrawRectangle(new Pen(Color.Chartreuse), hitboxViewportPosition.X - hitbox.Width / 2,
-                    hitboxViewportPosition.Y - hitbox.Height / 2, hitbox.Width, hitbox.Height);
-                
+
+                var brush = new SolidBrush(Color.Black);
+                graphics.DrawString(enemy.Health.ToString(), SystemFonts.CaptionFont, brush, enemyViewportPosition + new Size(hitbox.Width, 0));
+                graphics.FillEllipse(brush, enemyViewportPosition.X, enemyViewportPosition.Y, hitbox.Width, hitbox.Height);
             }
         }
 
@@ -185,31 +179,34 @@ namespace Game.View.Screen
             var startX = -_gameModel.Player.Position.X % GameSettings.TileSize;
             var startY = -_gameModel.Player.Position.Y % GameSettings.TileSize;
 
-            var startColumn = ConvertToTilesSystem(_gameModel.Player.Position.X) - ConvertToTilesSystem(clientHalfWidth);
+            var startColumn = ConvertToTilesSystem(_gameModel.Player.Position.X) -
+                              ConvertToTilesSystem(clientHalfWidth);
             var startRow = ConvertToTilesSystem(_gameModel.Player.Position.Y) - ConvertToTilesSystem(clientHalfHeight);
 
-            for (var column = startColumn - 1; column <= startColumn + ConvertToTilesSystem(ClientSize.Width) + 1; column++)
+            for (var column = startColumn - 1;
+                 column <= startColumn + ConvertToTilesSystem(ClientSize.Width) + 1;
+                 column++)
             for (var row = startRow - 1; row <= startRow + ConvertToTilesSystem(ClientSize.Height) + 1; row++)
             {
                 var x = ConvertToPixelsSystem(column - startColumn) + startX;
                 var y = ConvertToPixelsSystem(row - startRow) + startY;
-                
-                var color = (int) ((_fastNoise.GetPerlin(column, row) + 1) / 2 * 255);
-                graphics.FillRectangle(new SolidBrush(Color.FromArgb(color, color, color)), x, y, GameSettings.TileSize, GameSettings.TileSize);
+
+                var color = (int)((_fastNoise.GetPerlin(column, row) + 1) / 2 * 255);
+                graphics.FillRectangle(new SolidBrush(Color.FromArgb(color, color, color)), x, y, GameSettings.TileSize,
+                    GameSettings.TileSize);
             }
-            
         }
-    
+
         private int ConvertToTilesSystem(int value) => value / GameSettings.TileSize;
 
         private int ConvertToPixelsSystem(int value) => value * GameSettings.TileSize;
-        
+
         protected override void OnResize(EventArgs e)
         {
             this.Invalidate();
             base.OnResize(e);
         }
-        
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             KeyDown(e.KeyCode);

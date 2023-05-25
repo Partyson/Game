@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using Game.Model;
 using Game.View.Screen;
 
@@ -6,7 +7,7 @@ namespace Game.View
 {
     public class GameWindow : Form
     {
-        private  GameModel _gameModel;
+        private readonly GameModel _gameModel;
 
         public GameWindow(GameModel gameModel)
         {
@@ -14,6 +15,11 @@ namespace Game.View
             MaximizeBox = false;
             _gameModel = gameModel;
             _gameModel.GameStateChanged += SetGameState;
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
             _gameModel.GameState = GameState.Menu;
         }
 
@@ -22,21 +28,24 @@ namespace Game.View
             switch (gameState)
             {
                 case GameState.Game:
-                    SetScreen(new GameScreen(_gameModel));
+                    SetScreenThreadSafe(new GameScreen(_gameModel));
                     break;
                 case GameState.Menu:
-                    SetScreen(new MenuScreen(_gameModel));
+                    SetScreenThreadSafe(new MenuScreen(_gameModel));
                     break;
                 case GameState.Tutorial:
-                    SetScreen(new TutorialScreen(_gameModel));
+                    SetScreenThreadSafe(new TutorialScreen(_gameModel));
                     break;
             }
         }
+
+        private void SetScreenThreadSafe(BaseScreen screen) => BeginInvoke((Action)(() => SetScreen(screen)));
 
         private void SetScreen(BaseScreen screen)
         {
             foreach (Control control in Controls)
                 control.Dispose();
+
             Controls.Clear();
             Controls.Add(screen);
             screen.Focus();

@@ -36,7 +36,7 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="DotnetNoise, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-          <HintPath>..\packages\DotnetNoise.1.0.0\lib\netstandard2.0\DotnetNoise.dll</HintPath>
+          <HintPath>packages\DotnetNoise.1.0.0\lib\netstandard2.0\DotnetNoise.dll</HintPath>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
