@@ -14,6 +14,7 @@ namespace Game.Model
             set
             {
                 _gameState = value;
+                Console.Write("");
                 GameStateChanged?.Invoke(value);
             }
         } 
@@ -47,7 +48,7 @@ namespace Game.Model
         
         public void GameOver()
         {
-            GameState = GameState.GameOver;
+            GameState = GameState.Menu;
         }
 
         private void EnemyDied(Entity enemy)

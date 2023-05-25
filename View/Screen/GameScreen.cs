@@ -22,16 +22,17 @@ namespace Game.View.Screen
             { BoosterType.MaxHealth, Color.Red },
             { BoosterType.ReloadSpeed, Color.Blue }
         };
-        private object _lockObject = new object();
+        private readonly object _lockObject = new object();
         private readonly FastNoise _fastNoise = new FastNoise();
-        private CollisionController _collisionController;
-        private BoosterSpawner _boosterSpawner;
-        private EnemySpawner _enemySpawner;
-        private EnemyAi _enemyAi;
-        private GameTickController _gameTickController;
+        private readonly CollisionController _collisionController;
+        private readonly BoosterSpawner _boosterSpawner;
+        private readonly EnemySpawner _enemySpawner;
+        private readonly EnemyAi _enemyAi;
+        private readonly GameTickController _gameTickController;
 
         public GameScreen(GameModel gameModel) : base(gameModel)
         {
+
             _gameTickController = new GameTickController(100);
             _collisionController = new CollisionController(gameModel);
             _enemySpawner = new EnemySpawner(gameModel);
@@ -39,13 +40,20 @@ namespace Game.View.Screen
             _enemyAi = new EnemyAi(gameModel);
             _fastNoise.Frequency = 0.1f;
             
-            _gameTickController.RegisterAction(SpawnEnemy, 1);
-            _gameTickController.RegisterAction(SpawnBooster, 5);
+            _gameTickController.RegisterAction(SpawnEnemy, 5);
+            _gameTickController.RegisterAction(SpawnBooster, 10);
             _gameTickController.RegisterAction(UpdateEnemyAi, 1);
             _gameTickController.RegisterAction(CheckCollision, 1);
             _gameTickController.StartTimer();
-            
+            _gameModel.GameStateChanged += GameModelOnGameStateChanged;
             gameModel.StartGame();
+        }
+
+        private void GameModelOnGameStateChanged(GameState gameState)
+        {
+            Console.Write("afasfasfasf");
+            if(gameState == GameState.Game)
+                _gameTickController.StopTimer();
         }
 
         private void SpawnEnemy()

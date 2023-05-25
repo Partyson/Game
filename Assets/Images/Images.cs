@@ -12,6 +12,8 @@ namespace Game.Assets.Images
         public Image Green { get; }
         public Image White { get; }
         public Image Player { get; }
+        
+        public Image Tutorial { get; }
 
 
         private Image LoadImageFromAssets(string fileName) =>
@@ -25,6 +27,7 @@ namespace Game.Assets.Images
             Green = LoadImageFromAssets("green.png");
             White = LoadImageFromAssets("white.png");
             Player = LoadImageFromAssets("player.png");
+            Tutorial = LoadImageFromAssets("tutorial.png");
         }
 
         public Image GetImageFromType(LandType landType)

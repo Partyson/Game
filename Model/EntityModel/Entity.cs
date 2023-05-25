@@ -9,9 +9,11 @@ namespace Game.Model.EntityModel
         public double Health { get; protected set; }
         
         public double Damage { get; protected set; }
-        private event Action<Entity> EntityDied;
+        private static event Action<Entity> EntityDied;
 
         public HitBox HitBox { get; protected set; }
+
+        private static Action<Entity> _onEntityDied;
         
 
         public Entity(int x, int y)
@@ -24,6 +26,7 @@ namespace Game.Model.EntityModel
             Position = new Point(x, y);
             Health = health;
             Damage = damage;
+            _onEntityDied = onEntityDied;
             EntityDied += onEntityDied;
             HitBox = new HitBox(Position, new Size(50, 50));
         }
@@ -39,6 +42,10 @@ namespace Game.Model.EntityModel
             Health -= takenDamage;
             if (Health <= 0)
                 EntityDied(this);
+        }
+        ~Entity()
+        {
+            EntityDied -= _onEntityDied;
         }
     }
 }

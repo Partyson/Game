@@ -44,7 +44,6 @@ namespace Game.Controller
         {
             var side = (Side)_random.Next(4);
             var playerPosition = _gameModel.Player.Position;
-            
             var x = _random.Next(_spawnConfines[side].minX, _spawnConfines[side].maxX) + playerPosition.X;
             var y = _random.Next(_spawnConfines[side].minY, _spawnConfines[side].maxY) + playerPosition.Y;
             _gameModel.SpawnEnemy(x, y);

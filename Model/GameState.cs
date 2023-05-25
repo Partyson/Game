@@ -4,7 +4,6 @@
     {
         Menu,
         Tutorial,
-        GameOver,
         Game
     }
 }

@@ -72,11 +72,13 @@
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="View\Screen\BaseScreen.cs" />
-        <Compile Include="View\Screen\GameOverScreen.cs" />
+        <Compile Include="View\Screen\FlatButton.cs" />
+        <Compile Include="View\Screen\MenuScreen.cs" />
         <Compile Include="View\Screen\GameScreen.cs" />
         <Compile Include="View\GameWindow.cs">
           <SubType>Form</SubType>
         </Compile>
+        <Compile Include="View\Screen\TutorialScreen.cs" />
         <EmbeddedResource Include="Properties\Resources.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -119,6 +121,11 @@
     </ItemGroup>
     <ItemGroup>
       <EmbeddedResource Include="Assets\Images\player.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Assets\Images\tutorial.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </EmbeddedResource>
     </ItemGroup>

@@ -36,5 +36,7 @@ namespace Game.Controller
         }
 
         public void StartTimer() => _timer.Start();
+
+        public void StopTimer() => _timer.Stop();
     }
 }
