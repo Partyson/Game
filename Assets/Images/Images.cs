@@ -9,9 +9,6 @@ namespace Game.Assets.Images
         public Image Damage { get; }
         public Image HpRegen { get; }
         public Image MaxHealth { get; }
-        public Image Green { get; }
-        public Image White { get; }
-        public Image Player { get; }
         public Image Tutorial { get; }
 
 

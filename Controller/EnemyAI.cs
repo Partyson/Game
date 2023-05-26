@@ -24,13 +24,16 @@ namespace Game.Controller
                     enemy.Move(Normalize(vector));
             }
         }
+        
 
         private static Size Normalize(Size vector)
         {
             var length = GetLength(vector);
-            return new Size((int)(4 * vector.Width / length), (int)(4 * vector.Height / length));
+            return new Size((int)(6 * vector.Width / length), (int)(6 * vector.Height / length));
         }
         
         private static double GetLength(Size vector) => Math.Sqrt(vector.Height * vector.Height + vector.Width * vector.Width);
+        
+        
     }
 }

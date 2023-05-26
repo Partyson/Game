@@ -39,13 +39,12 @@ namespace Game.View.Screen
             _enemyAi = new EnemyAi(gameModel);
             _fastNoise.Frequency = 0.1f;
 
-            _gameTickController.RegisterAction(SpawnEnemy, 5);
-            _gameTickController.RegisterAction(SpawnBooster, 10);
+            _gameTickController.RegisterAction(SpawnEnemy, 10);
+            _gameTickController.RegisterAction(SpawnBooster, 15);
             _gameTickController.RegisterAction(UpdateEnemyAi, 1);
             _gameTickController.RegisterAction(CheckCollision, 1);
             _gameTickController.RegisterAction(Regeneration, 1);
-            _gameTickController.RegisterAction(UpEnemyHealth, 100);
-            _gameTickController.RegisterAction(UpEnemyDamage, 200);
+            _gameTickController.RegisterAction(UpEnemy, 100);
             _gameTickController.StartTimer();
             GameModel.GameStateChanged += GameModelOnGameStateChanged;
 
@@ -57,14 +56,10 @@ namespace Game.View.Screen
             GameModel.Player.Regeneration();
         }
 
-        private void UpEnemyDamage()
+        private void UpEnemy()
         {
-            GameModel.CurrentEnemyDamage *= 1.1;
-        }
-
-        private void UpEnemyHealth()
-        {
-            GameModel.CurrentEnemyHealth *= 1.1;
+            GameModel.CurrentEnemyDamage *= 1.15;
+            GameModel.CurrentEnemyHealth *= 1.15;
         }
 
         private void GameModelOnGameStateChanged(GameState gameState)
@@ -161,9 +156,9 @@ namespace Game.View.Screen
             {
                 var hitbox = (enemy.HitBox.Size.Width, enemy.HitBox.Size.Height);
                 var enemyViewportPosition = ConvertToViewportSystem(enemy.Position);
-                var EnemyHealth = (int)enemy.Health;
+                var health = (int)enemy.Health;
                 var brush = new SolidBrush(Color.Black);
-                graphics.DrawString(EnemyHealth.ToString(), SystemFonts.CaptionFont, brush, enemyViewportPosition + new Size(hitbox.Width, 0));
+                graphics.DrawString(health.ToString(), SystemFonts.CaptionFont, brush, enemyViewportPosition + new Size(hitbox.Width, 0));
                 graphics.FillEllipse(brush, enemyViewportPosition.X, enemyViewportPosition.Y, hitbox.Width, hitbox.Height);
             }
         }

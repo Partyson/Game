@@ -3,11 +3,9 @@
 namespace Game.Model.EntityModel
 {
     public class Player : Entity
-    {
-        private int BulletLimit { get; set; }
+    { 
         private double MaxHealth { get; set; }
         private double HeathRegeneration { get; set; }
-        private double ReloadSpeed { get; set; }
 
         public Player(int x, int y, Action<Entity> onPlayerOnEntityDied, int health = 100, int damage = 20)
             : base(x, y, onPlayerOnEntityDied, health, damage)
@@ -28,6 +26,8 @@ namespace Game.Model.EntityModel
                     HeathRegeneration += offset;
                     break;
                 case BoosterType.MaxHealth:
+                    if (Health.Equals(MaxHealth))
+                        Health *= offset;
                     MaxHealth *= offset;
                     break;
             }

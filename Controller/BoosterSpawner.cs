@@ -26,7 +26,7 @@ namespace Game.Controller
         {
             var x = _random.Next(GameSettings.MaxBoosterSpawnRange.Width) + _gameModel.Player.Position.X;
             var y = _random.Next(GameSettings.MaxBoosterSpawnRange.Height) + _gameModel.Player.Position.Y;
-            var randomBoosterData = _boosterDatas[_random.Next(2)];
+            var randomBoosterData = _boosterDatas[_random.Next(3)];
             _gameModel.SpawnBooster(x, y, randomBoosterData);
 
         }
