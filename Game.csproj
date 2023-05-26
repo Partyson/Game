@@ -102,29 +102,23 @@
         <None Include="App.config" />
     </ItemGroup>
     <ItemGroup>
-      <EmbeddedResource Include="Assets\Images\blue.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
-      <EmbeddedResource Include="Assets\Images\green.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
-      <EmbeddedResource Include="Assets\Images\red.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
-      <EmbeddedResource Include="Assets\Images\white.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
-      <EmbeddedResource Include="Assets\Images\yellow.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
-    </ItemGroup>
-    <ItemGroup>
       <EmbeddedResource Include="Assets\Images\player.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
       <EmbeddedResource Include="Assets\Images\tutorial.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Assets\Images\gamage.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Assets\Images\hpRegen.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Assets\Images\maxHealth.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </EmbeddedResource>
     </ItemGroup>

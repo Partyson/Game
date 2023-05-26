@@ -8,6 +8,8 @@ namespace Game.Model
     {
         private GameState _gameState;
         private readonly object _lockObject = new object();
+        public double CurrentEnemyHealth = 100;
+        public double CurrentEnemyDamage = 20;
 
         public GameState GameState
         {
@@ -36,9 +38,7 @@ namespace Game.Model
 
         public void SpawnEnemy(int x, int y)
         {
-            const int startHealth = 100;
-            const int startDamage = 20;
-            Enemies.Add(new Enemy(x, y, EnemyDied, startHealth, startDamage));
+            Enemies.Add(new Enemy(x, y, EnemyDied, CurrentEnemyHealth, CurrentEnemyDamage));
         }
 
         public void SpawnBooster(int x, int y, BoosterData boosterData)
@@ -55,8 +55,6 @@ namespace Game.Model
         {
             lock (_lockObject)
                 Enemies.Remove(enemy as Enemy);
-
-            Score++;
         }
 
         private void BoosterPicked(Entity booster)

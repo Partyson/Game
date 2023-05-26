@@ -11,21 +11,22 @@ namespace Game.View.Screen
         {
             BackColor = Color.Black;
             var gameNameLabel = new Label();
-            gameNameLabel.Text = "Cool White CircleShooter";
+            gameNameLabel.Text = "Last Cool White Airbender";
             gameNameLabel.Top = 48;
             gameNameLabel.ForeColor = Color.White;
             gameNameLabel.AutoSize = true;
+            gameNameLabel.Font = SystemFonts.CaptionFont;
             Controls.Add(gameNameLabel);
             
-            var startButton = new FlatButton("Start game");
+            var startButton = new FlatButton("Начать игру");
             startButton.Click += (sender, args) => gameModel.GameState = GameState.Game;
             Controls.Add(startButton);
 
-            var tutorialButton = new FlatButton("Open tutorial");
+            var tutorialButton = new FlatButton("Открыть обучение");
             tutorialButton.Click += (sender, args) => gameModel.GameState = GameState.Tutorial;
             Controls.Add(tutorialButton);
             
-            var exitButton = new FlatButton("   Exit   ");
+            var exitButton = new FlatButton("   Выход   ");
             exitButton.Click += (sender, args) => Application.Exit();
             Controls.Add(exitButton);
 

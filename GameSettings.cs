@@ -15,7 +15,7 @@ namespace Game
 
         public static readonly Rectangle MaxSpawnRange =
             new Rectangle(new Point(
-                    ViewportSize.Width / 2 - 300,
+                    -ViewportSize.Width / 2 - 300,
                     -ViewportSize.Height / 2 - 300),
                 ViewportSize + new Size(600, 600));
         

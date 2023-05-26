@@ -13,15 +13,13 @@ namespace Game.View.Screen
 {
     public class GameScreen : BaseScreen
     {
-        private readonly Images _images = new Images();
+        private static readonly Images Images = new Images();
 
-        private readonly Dictionary<BoosterType, Color> _colors = new Dictionary<BoosterType, Color>
+        private readonly Dictionary<BoosterType, Image> _colors = new Dictionary<BoosterType, Image>
         {
-            { BoosterType.Damage, Color.Aqua },
-            { BoosterType.BulletLimit, Color.Orange },
-            { BoosterType.HeathRegeneration, Color.Green },
-            { BoosterType.MaxHealth, Color.Red },
-            { BoosterType.ReloadSpeed, Color.Blue }
+            { BoosterType.Damage, Images.Damage },
+            { BoosterType.HeathRegeneration, Images.HpRegen },
+            { BoosterType.MaxHealth, Images.MaxHealth },
         };
 
         private readonly object _lockObject = new object();
@@ -45,10 +43,28 @@ namespace Game.View.Screen
             _gameTickController.RegisterAction(SpawnBooster, 10);
             _gameTickController.RegisterAction(UpdateEnemyAi, 1);
             _gameTickController.RegisterAction(CheckCollision, 1);
+            _gameTickController.RegisterAction(Regeneration, 1);
+            _gameTickController.RegisterAction(UpEnemyHealth, 100);
+            _gameTickController.RegisterAction(UpEnemyDamage, 200);
             _gameTickController.StartTimer();
             GameModel.GameStateChanged += GameModelOnGameStateChanged;
 
             gameModel.StartGame();
+        }
+
+        private void Regeneration()
+        {
+            GameModel.Player.Regeneration();
+        }
+
+        private void UpEnemyDamage()
+        {
+            GameModel.CurrentEnemyDamage *= 1.1;
+        }
+
+        private void UpEnemyHealth()
+        {
+            GameModel.CurrentEnemyHealth *= 1.1;
         }
 
         private void GameModelOnGameStateChanged(GameState gameState)
@@ -133,7 +149,7 @@ namespace Game.View.Screen
             {
                 var boosterViewportPosition = ConvertToViewportSystem(booster.Position);
                 var hitbox = (booster.HitBox.Size.Width, booster.HitBox.Size.Height);
-                graphics.FillRectangle(new SolidBrush(_colors[booster.BoosterData.Type]),
+                graphics.DrawImage(_colors[booster.BoosterData.Type],
                     boosterViewportPosition.X - hitbox.Width / 2,
                     boosterViewportPosition.Y - hitbox.Height / 2, hitbox.Width, hitbox.Height);
             }
@@ -145,17 +161,23 @@ namespace Game.View.Screen
             {
                 var hitbox = (enemy.HitBox.Size.Width, enemy.HitBox.Size.Height);
                 var enemyViewportPosition = ConvertToViewportSystem(enemy.Position);
-
+                var EnemyHealth = (int)enemy.Health;
                 var brush = new SolidBrush(Color.Black);
-                graphics.DrawString(enemy.Health.ToString(), SystemFonts.CaptionFont, brush, enemyViewportPosition + new Size(hitbox.Width, 0));
+                graphics.DrawString(EnemyHealth.ToString(), SystemFonts.CaptionFont, brush, enemyViewportPosition + new Size(hitbox.Width, 0));
                 graphics.FillEllipse(brush, enemyViewportPosition.X, enemyViewportPosition.Y, hitbox.Width, hitbox.Height);
             }
         }
 
         private void DrawPlayer(Graphics graphics)
         {
+            var hitbox = (GameModel.Player.HitBox.Size.Width, GameModel.Player.HitBox.Size.Height);
+            var playerViewportPosition = ConvertToViewportSystem(GameModel.Player.Position);
+            var health = (int)GameModel.Player.Health;
+
             graphics.FillEllipse(new SolidBrush(Color.White), ClientSize.Width / 2 - 8, ClientSize.Height / 2 - 8,
                 GameModel.Player.HitBox.Size.Width, GameModel.Player.HitBox.Size.Height);
+            graphics.DrawString(health.ToString(), SystemFonts.CaptionFont,
+                new SolidBrush(Color.Black),playerViewportPosition + new Size(hitbox.Width, 0));
         }
 
         private Point ConvertToViewportSystem(Point position)

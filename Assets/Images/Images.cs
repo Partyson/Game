@@ -6,13 +6,12 @@ namespace Game.Assets.Images
 {
     public class Images
     {
-        public Image Red { get; }
-        public Image Blue { get; }
-        public Image Yellow { get; }
+        public Image Damage { get; }
+        public Image HpRegen { get; }
+        public Image MaxHealth { get; }
         public Image Green { get; }
         public Image White { get; }
         public Image Player { get; }
-        
         public Image Tutorial { get; }
 
 
@@ -21,12 +20,9 @@ namespace Game.Assets.Images
 
         public Images()
         {
-            Red = LoadImageFromAssets("red.png");
-            Blue = LoadImageFromAssets("blue.png");
-            Yellow = LoadImageFromAssets("yellow.png");
-            Green = LoadImageFromAssets("green.png");
-            White = LoadImageFromAssets("white.png");
-            Player = LoadImageFromAssets("player.png");
+            Damage = LoadImageFromAssets("gamage.png");
+            HpRegen = LoadImageFromAssets("hpRegen.png");
+            MaxHealth = LoadImageFromAssets("maxHealth.png");
             Tutorial = LoadImageFromAssets("tutorial.png");
         }
     }

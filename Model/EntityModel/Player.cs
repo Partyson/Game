@@ -12,6 +12,8 @@ namespace Game.Model.EntityModel
         public Player(int x, int y, Action<Entity> onPlayerOnEntityDied, int health = 100, int damage = 20)
             : base(x, y, onPlayerOnEntityDied, health, damage)
         {
+            MaxHealth = Health;
+            HeathRegeneration = 1;
         }
 
         public void TakeBooster(Booster booster)
@@ -20,22 +22,23 @@ namespace Game.Model.EntityModel
             switch (booster.BoosterData.Type)
             {
                 case BoosterType.Damage:
-                    Damage += offset;
-                    break;
-                case BoosterType.BulletLimit:
-                    BulletLimit += (int)offset;
+                    Damage *= offset;
                     break;
                 case BoosterType.HeathRegeneration:
                     HeathRegeneration += offset;
                     break;
                 case BoosterType.MaxHealth:
-                    MaxHealth += offset;
-                    break;
-                case BoosterType.ReloadSpeed:
-                default:
-                    ReloadSpeed -= offset;
+                    MaxHealth *= offset;
                     break;
             }
+        }
+
+        public void Regeneration()
+        {
+            if (Health + HeathRegeneration <= MaxHealth)
+                Health += HeathRegeneration;
+            else
+                Health = MaxHealth;
         }
     }
 }

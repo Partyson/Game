@@ -6,7 +6,7 @@ namespace Game.Model.EntityModel
     public abstract class Entity
     {
         public Point Position { get; private set; }
-        public double Health { get; private set; }
+        public double Health { get; protected set; }
         
         public double Damage { get; protected set; }
         private event Action<Entity> EntityDied;
@@ -32,7 +32,7 @@ namespace Game.Model.EntityModel
         public void GetDamage(double takenDamage)
         {
             Health -= takenDamage;
-            if (Health <= 0)
+            if (Health < 1)
                 EntityDied(this);
         }
     }

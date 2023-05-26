@@ -9,12 +9,13 @@ namespace Game.View.Screen
     {
         public TutorialScreen(GameModel gameModel) : base(gameModel)
         {
-            BackColor = Color.Black;
             var cancelButton = new FlatButton("Cancel");
             cancelButton.Click += (sender, args) => gameModel.GameState = GameState.Menu;
+            cancelButton.Location = new Point(900, 800);
             Controls.Add(cancelButton);
             BackgroundImage = new Images().Tutorial;
-            BackgroundImageLayout = ImageLayout.Stretch;
+            BackgroundImageLayout = ImageLayout.None;
+            BackColor = Color.Black;
         }
     }
 }

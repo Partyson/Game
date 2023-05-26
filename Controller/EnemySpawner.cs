@@ -25,7 +25,7 @@ namespace Game.Controller
                 },
                 {
                     Side.Left,
-                    (GameSettings.MaxSpawnRange.Left, GameSettings.MinSpawnRange.Left,
+                    (GameSettings.MaxSpawnRange.Left,  GameSettings.MinSpawnRange.Left,
                         GameSettings.MaxSpawnRange.Top, GameSettings.MaxSpawnRange.Bottom)
                 },
                 {
