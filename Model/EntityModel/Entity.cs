@@ -11,7 +11,7 @@ namespace Game.Model.EntityModel
         public double Damage { get; protected set; }
         private event Action<Entity> EntityDied;
 
-        public HitBox HitBox { get; protected set; }
+        public HitBox HitBox { get; }
         
         
         public Entity(int x, int y, Action<Entity> onEntityDied, double health, double damage)

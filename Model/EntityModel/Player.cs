@@ -33,7 +33,7 @@ namespace Game.Model.EntityModel
             }
         }
 
-        public void Regeneration()
+        public void RegenerateHealth()
         {
             if (Health + HeathRegeneration <= MaxHealth)
                 Health += HeathRegeneration;

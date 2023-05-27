@@ -44,7 +44,7 @@ namespace Game.View.Screen
             _gameTickController.RegisterAction(UpdateEnemyAi, 1);
             _gameTickController.RegisterAction(CheckCollision, 1);
             _gameTickController.RegisterAction(Regeneration, 1);
-            _gameTickController.RegisterAction(UpEnemy, 100);
+            _gameTickController.RegisterAction(UpEnemy, 200);
             _gameTickController.StartTimer();
             GameModel.GameStateChanged += GameModelOnGameStateChanged;
 
@@ -53,13 +53,12 @@ namespace Game.View.Screen
 
         private void Regeneration()
         {
-            GameModel.Player.Regeneration();
+            GameModel.Player.RegenerateHealth();
         }
 
         private void UpEnemy()
         {
-            GameModel.CurrentEnemyDamage *= 1.15;
-            GameModel.CurrentEnemyHealth *= 1.15;
+            GameModel.UpEnemyDamageAndHealth();
         }
 
         private void GameModelOnGameStateChanged(GameState gameState)

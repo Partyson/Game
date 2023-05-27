@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Game.View.Screen
 {
-    public class FlatButton : Button
+    internal sealed class FlatButton : Button
     {
         public FlatButton(string text)
         {

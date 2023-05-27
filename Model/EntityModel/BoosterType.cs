@@ -4,9 +4,6 @@
     {
         Damage,
         MaxHealth,
-        HeathRegeneration,
-        BulletLimit,
-        ReloadSpeed,
-        
+        HeathRegeneration
     }
 }
