@@ -31,9 +31,8 @@ namespace Game.Controller
             var length = GetLength(vector);
             return new Size((int)(6 * vector.Width / length), (int)(6 * vector.Height / length));
         }
-        
-        private static double GetLength(Size vector) => Math.Sqrt(vector.Height * vector.Height + vector.Width * vector.Width);
-        
-        
+
+        private static double GetLength(Size vector) =>
+            Math.Sqrt(vector.Height * vector.Height + vector.Width * vector.Width);
     }
 }

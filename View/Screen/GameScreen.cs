@@ -40,7 +40,7 @@ namespace Game.View.Screen
             _fastNoise.Frequency = 0.1f;
 
             _gameTickController.RegisterAction(SpawnEnemy, 10);
-            _gameTickController.RegisterAction(SpawnBooster, 15);
+            _gameTickController.RegisterAction(SpawnBooster, 10);
             _gameTickController.RegisterAction(UpdateEnemyAi, 1);
             _gameTickController.RegisterAction(CheckCollision, 1);
             _gameTickController.RegisterAction(Regeneration, 1);
